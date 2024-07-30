@@ -2,11 +2,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+  <title>JSP - Hello World</title>
 </head>
 <body>
-<h1><%= "HOME" %>
-</h1>
+<h1><%= "HOME" %></h1>
 <br/>
 <jsp:include page="top_menu.jsp"/>
 </body>
