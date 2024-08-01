@@ -16,7 +16,7 @@ import java.util.List;
         ,"/m_insertOK.do","/m_updateOK.do","/m_deleteOK.do","/m_selectAllOK.do"})
 public class MemberController extends HttpServlet {
 
-
+        MemberDAO dao = new MemberDAOimpl();
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String sPath = request.getServletPath();
         System.out.println("sPath:"+sPath);
@@ -25,6 +25,14 @@ public class MemberController extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("member/insert.jsp");
             rd.forward(request,response);
         }else if (sPath.equals("/m_update.do")){
+            System.out.println(request.getParameter("num"));
+            int num = Integer.parseInt(request.getParameter("num"));
+            MemberVO vo = new MemberVO();
+            vo.setNum(num);
+            MemberVO vo2 = dao.selectOne(vo);
+
+            request.setAttribute("vo2",vo2);
+
             RequestDispatcher rd = request.getRequestDispatcher("member/update.jsp");
             rd.forward(request,response);
         }else if (sPath.equals("/m_delete.do")){
@@ -33,53 +41,101 @@ public class MemberController extends HttpServlet {
         }else if (sPath.equals("/m_selectOne.do")){
             System.out.println(request.getParameter("num"));
             int num = Integer.parseInt(request.getParameter("num"));
+            MemberVO vo = new MemberVO();
+            vo.setNum(num);
+            MemberVO vo2 = dao.selectOne(vo);
 
-            MemberVO vo2 = new MemberVO();
-            vo2.setNum(num);
-            vo2.setId("admin1");
-            vo2.setPw("비번1");
-            vo2.setName("홍길동1");
-            vo2.setTel("010");
             request.setAttribute("vo2",vo2);
 
             RequestDispatcher rd = request.getRequestDispatcher("member/selectOne.jsp");
             rd.forward(request,response);
         }else if (sPath.equals("/m_selectAll.do")){
 
-            List<MemberVO> list = new ArrayList<>();
-            for (int i = 1; i < 6; i++) {
-                MemberVO vo2 = new MemberVO();
-                vo2.setNum(i);
-                vo2.setId("admin"+i);
-                vo2.setPw("비번"+i);
-                vo2.setName("홍길동"+i);
-                vo2.setTel("010-4444-000"+i);
-                list.add(vo2);
-            }
+            List<MemberVO> list = dao.selectAll();
+
             request.setAttribute("list",list);
 
             RequestDispatcher rd = request.getRequestDispatcher("member/selectAll.jsp");
             rd.forward(request,response);
         }else if (sPath.equals("/m_searchList.do")){
-            System.out.println(request.getParameter("searchKey"));
-            System.out.println(request.getParameter("search_word"));
+            String searchKey = request.getParameter("searchKey");
+            String searchWord = request.getParameter("searchWord");
+            System.out.println(searchKey);
+            System.out.println(searchWord);
 
-            RequestDispatcher rd = request.getRequestDispatcher("member/searchList.jsp");
+            List<MemberVO> list = dao.searchList(searchKey,searchWord);
+
+            request.setAttribute("list",list);
+            RequestDispatcher rd = request.getRequestDispatcher("member/selectAll.jsp");
             rd.forward(request,response);
         } else if (sPath.equals("/m_insertOK.do")) {
-            System.out.println(request.getParameter("id"));
-            System.out.println(request.getParameter("pw"));
-            System.out.println(request.getParameter("name"));
-            System.out.println(request.getParameter("tel"));
+            String id = request.getParameter("id");
+            String pw = request.getParameter("pw");
+            String name = request.getParameter("name");
+            String tel = request.getParameter("tel");
+
+            System.out.println(id);
+            System.out.println(pw);
+            System.out.println(name);
+            System.out.println(tel);
+
+            MemberVO vo = new MemberVO();
+            vo.setId(id);
+            vo.setPw(pw);
+            vo.setName(name);
+            vo.setTel(tel);
+
+            int result = dao.insert(vo);
+            if (result == 1){
+                System.out.println("insert successed...");
+                response.sendRedirect("m_selectAll.do");
+            } else {
+                System.out.println("insert failed...");
+                response.sendRedirect("m_insert.do");
+            }
         }else if (sPath.equals("/m_updateOK.do")) {
-            System.out.println(request.getParameter("id"));
-            System.out.println(request.getParameter("pw"));
-            System.out.println(request.getParameter("name"));
-            System.out.println(request.getParameter("tel"));
+            String num = request.getParameter("num");
+            String id = request.getParameter("id");
+            String pw = request.getParameter("pw");
+            String name = request.getParameter("name");
+            String tel = request.getParameter("tel");
+
+            System.out.println(num);
+            System.out.println(id);
+            System.out.println(pw);
+            System.out.println(name);
+            System.out.println(tel);
+
+            MemberVO vo = new MemberVO();
+            vo.setNum(Integer.parseInt(num));
+            vo.setId(id);
+            vo.setPw(pw);
+            vo.setName(name);
+            vo.setTel(tel);
+
+            int result = dao.update(vo) ;
+            if (result == 1){
+                System.out.println("update successed...");
+                response.sendRedirect("m_selectOne.do?num="+num);
+            } else {
+                System.out.println("update failed...");
+                response.sendRedirect("m_update.do?num="+num);
+            }
         }else if (sPath.equals("/m_deleteOK.do")) {
+            String num = request.getParameter("num");
+            System.out.println(num);
 
-            System.out.println(request.getParameter("id"));
+            MemberVO vo = new MemberVO();
+            vo.setNum(Integer.parseInt(num));
 
+            int result = dao.delete(vo) ;
+            if (result == 1){
+                System.out.println("delete successed...");
+                response.sendRedirect("m_selectAll.do");
+            } else {
+                System.out.println("delete failed...");
+                response.sendRedirect("m_delete.do?num="+num);
+            }
         }
     }
 

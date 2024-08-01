@@ -9,11 +9,11 @@
 <br/>
 <jsp:include page="../top_menu.jsp"/>
 <form action="m_deleteOK.do" method="post">
-  <table>
+  <table border="1">
     <tbody>
     <tr>
-      <td>${param.id} 번 회원을 정말 삭제하시겠습니까?</td>
-      <td><input type="hidden" name="num" value="${param.id}"></td>
+      <td>${param.num} 번 회원을 정말 삭제하시겠습니까?</td>
+      <td><input type="hidden" name="num" value="${param.num}"></td>
     </tr>
     </tbody>
     <tfoot>

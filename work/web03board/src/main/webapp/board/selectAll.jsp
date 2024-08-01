@@ -1,6 +1,6 @@
-<%@ page import="java.util.List" %>
-<%@ page import="com.example.web03board.BoardVO" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,19 +30,14 @@
         </tr>
     </thead>
     <tbody>
-    <% //스크립트릿 태그 - 자바코딩영역
-         List<BoardVO> list = (List<BoardVO>) request.getAttribute("list");
-         for (BoardVO x : list){
-    %>
-    <tr>
-        <td><a href="b_selectOne.do?num=<%= x.getNum()%>"><%= x.getNum()%></a></td>
-        <td><a href="b_selectOne.do?num=<%= x.getTitle()%>"><%= x.getTitle()%></a></td>
-        <td><%= x.getWriter()%></td>
-        <td><%= x.getWdate()%></td>
-    </tr>
-    <%
-        }
-    %>
+    <c:forEach var="vo" items="${list}">
+        <tr>
+            <td><a href="b_selectOne.do?num=${vo.num}">${vo.num}</a></td>
+            <td><a href="b_selectOne.do?num=${vo.num}">${vo.title}</a></td>
+            <td>${vo.writer}</td>
+            <td>${vo.wdate}</td>
+        </tr>
+    </c:forEach>
     </tbody>
     <tfoot>
         <tr>

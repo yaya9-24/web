@@ -17,7 +17,8 @@ import java.util.List;
         ,"/b_insertOK.do","/b_updateOK.do","/b_deleteOK.do","/b_selectAllOK.do"})
 public class BoardController extends HttpServlet {
 
-
+    //BoardDAO,BoardDAOimpl 생성하시고 각 메소드들을 해당 분기문에서 호출해서 로그출력하세요.
+    BoardDAO dao = new BoardDAOimpl();
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         String sPath = request.getServletPath();
@@ -27,65 +28,114 @@ public class BoardController extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("board/insert.jsp");
             rd.forward(request,response);
         }else if (sPath.equals("/b_update.do")){
+            int num = Integer.parseInt(request.getParameter("num"));
+            System.out.println(num);
+
+            BoardVO vo = new BoardVO();
+            vo.setNum(num);
+
+            BoardVO vo2 = dao.selectOne(vo);
+
+            request.setAttribute("vo2",vo2);
+
             RequestDispatcher rd = request.getRequestDispatcher("board/update.jsp");
             rd.forward(request,response);
         }else if (sPath.equals("/b_delete.do")){
             RequestDispatcher rd = request.getRequestDispatcher("board/delete.jsp");
             rd.forward(request,response);
         }else if (sPath.equals("/b_selectOne.do")){
-            System.out.println(request.getParameter("num"));
-
             int num = Integer.parseInt(request.getParameter("num"));
-            BoardVO vo2 = new BoardVO();
-            vo2.setNum(num);
-            vo2.setTitle("jsp...");
-            vo2.setContent("servlet...");
-            vo2.setWriter("admin1");
-            vo2.setWdate(new Timestamp(System.currentTimeMillis()));
+            System.out.println(num);
+
+            BoardVO vo = new BoardVO();
+            vo.setNum(num);
+
+            BoardVO vo2 = dao.selectOne(vo);
 
             request.setAttribute("vo2",vo2);
-
 
             RequestDispatcher rd = request.getRequestDispatcher("board/selectOne.jsp");
             rd.forward(request,response);
         }else if (sPath.equals("/b_selectAll.do")){
-
-            List<BoardVO> list = new ArrayList<>();
-            for (int i = 0; i < 3; i++) {
-                BoardVO vo2 = new BoardVO();
-                vo2.setNum(10+i);
-                vo2.setTitle("jsp..."+i);
-                vo2.setContent("servlet..."+i);
-                vo2.setWriter("admin1"+i);
-                vo2.setWdate(new Timestamp(System.currentTimeMillis()));
-                list.add(vo2);
-            }
+            List<BoardVO> list = dao.selectAll();
 
             request.setAttribute("list",list);
 
             RequestDispatcher rd = request.getRequestDispatcher("board/selectAll.jsp");
             rd.forward(request,response);
         }else if (sPath.equals("/b_searchList.do")){
-            System.out.println(request.getParameter("searchKey"));
-            System.out.println(request.getParameter("search_word"));
+            String searchKey = request.getParameter("searchKey");
+            String search_word =request.getParameter("search_word");
+            System.out.println(searchKey);
+            System.out.println(search_word);
+
+            List<BoardVO> list = dao.searchList(searchKey,search_word);
+            request.setAttribute("list",list);
 
             RequestDispatcher rd = request.getRequestDispatcher("board/selectAll.jsp");
             rd.forward(request,response);
         }else if (sPath.equals("/b_insertOK.do")){
+            String title = request.getParameter("title");
+            String content = request.getParameter("content");
+            String writer = request.getParameter("writer");
+            System.out.println(title);
+            System.out.println(content);
+            System.out.println(writer);
 
-            System.out.println(request.getParameter("title"));
-            System.out.println(request.getParameter("content"));
-            System.out.println(request.getParameter("writer"));
+            BoardVO vo = new BoardVO();
+            vo.setTitle(title);
+            vo.setContent(content);
+            vo.setWriter(writer);
+
+            int result = dao.insert(vo);
+            if (result ==1){
+                System.out.println("insert successed..");
+                response.sendRedirect("b_selectAll.do"); //서블릿패스
+            }else {
+                System.out.println("insert failed..");
+                response.sendRedirect("b_insert.do"); //서블릿패스
+            }
         }else if (sPath.equals("/b_updateOK.do")){
+            String num = request.getParameter("num");
+            String title = request.getParameter("title");
+            String content = request.getParameter("content");
+            String writer = request.getParameter("writer");
 
-            System.out.println(request.getParameter("num"));
-            System.out.println(request.getParameter("title"));
-            System.out.println(request.getParameter("content"));
-            System.out.println(request.getParameter("writer"));
+            System.out.println(num);
+            System.out.println(title);
+            System.out.println(content);
+            System.out.println(writer);
+
+            BoardVO vo = new BoardVO();
+            vo.setNum(Integer.parseInt(num));
+            vo.setTitle(title);
+            vo.setContent(content);
+            vo.setWriter(writer);
+
+            int result = dao.update(vo);
+
+            if (result ==1){
+                System.out.println("update successed..");
+                response.sendRedirect("b_selectOne.do?num="+num);
+            }else {
+                System.out.println("update failed");
+                response.sendRedirect("b_update.do?num="+num);
+            }
         }else if (sPath.equals("/b_deleteOK.do")){
+            String num = request.getParameter("num");
+            System.out.println(num);
 
-            System.out.println(request.getParameter("num"));
+            BoardVO vo = new BoardVO();
+            vo.setNum(Integer.parseInt(num));
 
+            int result = dao.delete(vo);
+            if (result ==1){
+                System.out.println("delete successed...");
+                response.sendRedirect("b_selectAll.do");
+            }else {
+                System.out.println("delete failed...");
+                response.sendRedirect("b_delete.do?num="+num);
+            }
         }
     }//end doGet
 

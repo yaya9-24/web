@@ -64,27 +64,27 @@
 <body>
 <jsp:include page="../top_menu.jsp"/>
 <div>
-  <h1><%= "회원가입 작성 페이지" %></h1>
+  <h1><%= "회원가입" %></h1>
   <form action="m_insertOK.do" method="post">
     <table id="insertTable">
       <tr>
-        <td><label for="id">아이디</label></td>
-        <td><input type="text" id="id" name="id" placeholder="아이디를 입력하세요"></td>
+        <td><label for="id">ID</label></td>
+        <td><input type="text" id="id" name="id" value="admin" placeholder="ID를 입력하세요"></td>
       </tr>
       <tr>
-        <td><label for="pw">비밀번호</label></td>
-        <td><input type="text" id="pw" name="pw" placeholder="비밀번호를 입력하세요"></td>
+        <td><label for="pw">PW</label></td>
+        <td><input type="text" id="pw" name="pw" value="hi1111" placeholder="PW를 입력하세요"></td>
       </tr>
       <tr>
-        <td><label for="name">이름</label></td>
-        <td><input type="text" id="name" name="name" placeholder="이름을 입력하세요"></td>
+        <td><label for="name">NAME</label></td>
+        <td><input type="text" id="name" name="name" value="kim" placeholder="이름을 입력하세요"></td>
       </tr>
       <tr>
-        <td><label for="tel">전화번호</label></td>
-        <td><input type="text" id="tel" name="tel" placeholder="전화번호를 입력하세요"></td>
+        <td><label for="tel">TEL</label></td>
+        <td><input type="text" id="tel" name="tel" value="010" placeholder="전화번호를 입력하세요"></td>
       </tr>
       <tr>
-        <td colspan="4"><input type="submit" value="회원가입"></td>
+        <td colspan="4"><input type="submit" value="가입완료"></td>
       </tr>
     </table>
   </form>
