@@ -1,5 +1,5 @@
 
-package com.example.web03board;
+package com.example.web07total2.board.model;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

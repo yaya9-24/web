@@ -1,5 +1,8 @@
-package com.example.web04member;
+package com.example.web07total2.member.controller;
 
+import com.example.web07total2.member.model.MemberDAO;
+import com.example.web07total2.member.model.MemberDAOimpl;
+import com.example.web07total2.member.model.MemberVO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet({"/m_insert.do","/m_update.do","/m_delete.do"
