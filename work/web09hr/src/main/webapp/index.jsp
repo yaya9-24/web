@@ -5,9 +5,8 @@
   <title>JSP - Hello World</title>
 </head>
 <body>
-<h1><%= "회원관리 및 게시글 관리 통합프로그램 만들기 미션" %></h1>
+<h1><%= "HOME" %></h1>
 <br/>
 <jsp:include page="top_menu.jsp"/>
-<h1>${user_id}</h1>
 </body>
 </html>

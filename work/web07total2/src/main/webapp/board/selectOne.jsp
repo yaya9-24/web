@@ -49,7 +49,7 @@
         </tr>
         <tr>
             <td><label for="writer">작성자:</label> </td>
-            <td><input type="text" id="writer" name="writer" value="admin3"></td>
+            <td>${user_id}<input type="hidden" id="writer" name="writer" value="${user_id}"></td>
         </tr>
         <tr>
             <td><input type="submit" value="댓글입력"></td>
@@ -74,8 +74,12 @@
             <td>${cvo.writer}</td>
             <td>${cvo.wdate}</td>
             <td>
+                <c:if test="${user_id==cvo.writer}">
                 <a href="c_deleteOK.do?num=${cvo.num}&bnum=${vo2.num}">댓글삭제</a>
+                </c:if>
             </td>
+
+
         </tr>
     </c:forEach>
 

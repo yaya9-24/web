@@ -9,4 +9,5 @@ public interface MemberDAO {
     public MemberVO selectOne(MemberVO vo);
     public List<MemberVO> selectAll();
     public List<MemberVO> searchList(String searchKey,String searchWord);
+    public MemberVO login(MemberVO vo);
 }

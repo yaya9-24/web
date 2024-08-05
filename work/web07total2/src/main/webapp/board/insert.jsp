@@ -78,7 +78,7 @@
             </tr>
             <tr>
                 <td><label for="writer">작성자</label></td>
-                <td>admin1<input type="hidden" id="writer" name="writer" value="admin1"></td>
+                <td>${user_id}<input type="hidden" id="writer" name="writer" value="${user_id}"></td>
             </tr>
             <tr>
                 <td colspan="2"><input type="submit" value="글쓰기 완료"></td>

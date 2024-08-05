@@ -9,13 +9,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.List;
 
 @WebServlet({"/m_insert.do","/m_update.do","/m_delete.do"
         ,"/m_selectOne.do","/m_selectAll.do","/m_searchList.do"
-        ,"/m_insertOK.do","/m_updateOK.do","/m_deleteOK.do","/m_selectAllOK.do"})
+        ,"/m_insertOK.do","/m_updateOK.do","/m_deleteOK.do","/m_selectAllOK.do"
+        ,"/login.do","/loginOK.do","/logout.do"})
 public class MemberController extends HttpServlet {
 
         MemberDAO dao = new MemberDAOimpl();
@@ -138,6 +140,33 @@ public class MemberController extends HttpServlet {
                 System.out.println("delete failed...");
                 response.sendRedirect("m_delete.do?num="+num);
             }
+        } else if (sPath.equals("/login.do")) {
+            RequestDispatcher rd = request.getRequestDispatcher("member/login.jsp");
+            rd.forward(request,response);
+        } else if (sPath.equals("/loginOK.do")) {
+            String id = request.getParameter("id");
+            String pw = request.getParameter("pw");
+            System.out.println(id);
+            System.out.println(pw);
+
+            MemberVO vo = new MemberVO();
+            vo.setId(id);
+            vo.setPw(pw);
+            MemberVO vo2 = dao.login(vo);
+            System.out.println(vo2);
+            if (vo2 != null){
+                HttpSession session = request.getSession();
+                session.setAttribute("user_id",id);
+                session.setMaxInactiveInterval(5*60);
+                response.sendRedirect("home.do");
+            }else {
+                response.sendRedirect("login.do");
+            }
+        } else if (sPath.equals("/logout.do")) {
+            HttpSession session = request.getSession();
+            session.invalidate();
+
+            response.sendRedirect("home.do");
         }
     }
 
