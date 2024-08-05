@@ -5,4 +5,6 @@
 <a href="j_selectAll.do">전체 직업 목록</a>
 <a href="d_insert.do">부서 추가</a>
 <a href="d_selectAll.do">전체 부서 목록</a>
+<a href="e_insert.do">직원 추가</a>
+<a href="e_selectAll.do">전체 직원 목록</a>
 <hr>
