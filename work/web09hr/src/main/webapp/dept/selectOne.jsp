@@ -27,8 +27,8 @@
     </tbody>
 </table>
 
-<a href="d_update.do?department_id=${vo2.department_id}">수정하기</a>
-<a href="d_delete.do?department_id=${vo2.department_id}">삭제하기</a>
+<a href="d_update.do?department_id=${vo2.department_id}">부서수정</a>
+<a href="d_delete.do?department_id=${vo2.department_id}">부서삭제</a>
 
 </body>
 </html>

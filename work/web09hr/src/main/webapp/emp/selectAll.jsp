@@ -14,6 +14,7 @@
     <select name="searchKey">
         <option value="first_name">first_name</option>
         <option value="job_id">job_id</option>
+        <option value="phone_number">phone_number</option>
     </select>
     <input type="text" name="searchWord">
     <input type="submit" value="검색">
@@ -50,6 +51,11 @@
             </tr>
         </c:forEach>
     </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="11" align="center">1 2 3 4</td>
+    </tr>
+    </tfoot>
 </table>
 </body>
 </html>

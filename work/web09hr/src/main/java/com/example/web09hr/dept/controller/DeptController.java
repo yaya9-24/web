@@ -18,7 +18,7 @@ import java.util.List;
         ,"/d_insertOK.do","/d_updateOK.do","/d_deleteOK.do"})
 public class DeptController extends HttpServlet {
 
-    DeptDAO ddao = new DeptDAOimpl();
+    DeptDAO dao = new DeptDAOimpl();
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String sPath = request.getServletPath();
@@ -33,7 +33,7 @@ public class DeptController extends HttpServlet {
 
             DeptVO vo = new DeptVO();
             vo.setDepartment_id(Integer.parseInt(department_id));
-            DeptVO vo2 = ddao.selectOne(vo);
+            DeptVO vo2 = dao.selectOne(vo);
             request.setAttribute("vo2",vo2);
 
             RequestDispatcher rd = request.getRequestDispatcher("dept/update.jsp");
@@ -47,13 +47,13 @@ public class DeptController extends HttpServlet {
 
             DeptVO vo = new DeptVO();
             vo.setDepartment_id(Integer.parseInt(department_id));
-            DeptVO vo2 = ddao.selectOne(vo);
+            DeptVO vo2 = dao.selectOne(vo);
             request.setAttribute("vo2",vo2);
 
             RequestDispatcher rd = request.getRequestDispatcher("dept/selectOne.jsp");
             rd.forward(request,response);
         }else if (sPath.equals("/d_selectAll.do")){
-            List<DeptVO> list = ddao.selectAll();
+            List<DeptVO> list = dao.selectAll();
             request.setAttribute("list",list);
 
 
@@ -65,28 +65,25 @@ public class DeptController extends HttpServlet {
             System.out.println(searchKey);
             System.out.println(searchWord);
 
-            List<DeptVO> list = ddao.searchList(searchKey,searchWord);
+            List<DeptVO> list = dao.searchList(searchKey,searchWord);
             request.setAttribute("list",list);
             RequestDispatcher rd = request.getRequestDispatcher("dept/selectAll.jsp");
             rd.forward(request,response);
         }else if (sPath.equals("/d_insertOK.do")){
-//            String department_id = request.getParameter("department_id");
             String department_name = request.getParameter("department_name");
             String manager_id = request.getParameter("manager_id");
             String location_id = request.getParameter("location_id");
 
-//            System.out.println(department_id);
             System.out.println(department_name);
             System.out.println(manager_id);
             System.out.println(location_id);
 
             DeptVO vo = new DeptVO();
-//            vo.setDepartment_id(Integer.parseInt(department_id));
             vo.setDepartment_name(department_name);
             vo.setManager_id(Integer.parseInt(manager_id));
             vo.setLocation_id(Integer.parseInt(location_id));
 
-            int result = ddao.insert(vo);
+            int result = dao.insert(vo);
             if (result == 1){
                 System.out.println("insert successed...");
                 response.sendRedirect("d_selectAll.do");
@@ -111,10 +108,10 @@ public class DeptController extends HttpServlet {
             vo.setManager_id(Integer.parseInt(manager_id));
             vo.setLocation_id(Integer.parseInt(location_id));
 
-            int result = ddao.update(vo);
+            int result = dao.update(vo);
             if (result == 1){
                 System.out.println("update successed...");
-                response.sendRedirect("d_selectAll.do");
+                response.sendRedirect("d_selectOne.do?department_id="+department_id);
             } else {
                 System.out.println("update failed...");
                 response.sendRedirect("d_update.do");
@@ -126,7 +123,7 @@ public class DeptController extends HttpServlet {
             DeptVO vo = new DeptVO();
             vo.setDepartment_id(Integer.parseInt(department_id));
 
-            int result = ddao.delete(vo);
+            int result = dao.delete(vo);
             if (result == 1){
                 System.out.println("delete successed...");
                 response.sendRedirect("d_selectAll.do");

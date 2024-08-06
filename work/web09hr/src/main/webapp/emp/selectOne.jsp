@@ -39,7 +39,7 @@
         </tr>
     </tbody>
 </table>
-<a href="e_update.do?employee_id=${vo2.employee_id}">수정하기</a>
-<a href="e_delete.do?employee_id=${vo2.employee_id}">삭제하기</a>
+<a href="e_update.do?employee_id=${vo2.employee_id}">사원수정</a>
+<a href="e_delete.do?employee_id=${vo2.employee_id}">사원삭제</a>
 </body>
 </html>

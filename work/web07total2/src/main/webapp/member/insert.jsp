@@ -59,6 +59,26 @@
       background-color: #ffc6c6;
     }
   </style>
+  <script>
+  window.onload = function (){
+    document.getElementById("btn_idCheck").onclick = function (){
+      console.log("onclick...")
+
+      let id = document.getElementById("id").value;
+
+      const xhttp = new XMLHttpRequest();
+      xhttp.onload = function (){
+        console.log(this.responseText);
+
+        let obj = JSON.parse(this.responseText);
+
+      };
+      xhttp.open("GET","http://localhost:8090/web07total2_war_exploded/m_idCheck.do?id="+id);
+      xhttp.send();
+    };
+  };
+
+  </script>
 </head>
 
 <body>
@@ -69,7 +89,11 @@
     <table id="insertTable">
       <tr>
         <td><label for="id">ID</label></td>
-        <td><input type="text" id="id" name="id" value="admin" placeholder="ID를 입력하세요"></td>
+        <td>
+          <input type="text" id="id" name="id" value="admin" placeholder="ID를 입력하세요">
+          <button type="button" id="btn_idCheck">중복체크</button>
+          버튼추가, 비동기통신 ,db연동해서 결과출력(사용가능 or 중복된 아이디)
+        </td>
       </tr>
       <tr>
         <td><label for="pw">PW</label></td>

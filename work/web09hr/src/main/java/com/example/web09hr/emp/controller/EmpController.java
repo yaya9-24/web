@@ -146,7 +146,7 @@ public class EmpController extends HttpServlet {
                 response.sendRedirect("e_selectAll.do");
             }else {
                 System.out.println("delete failed...");
-                response.sendRedirect("e_delete.do");
+                response.sendRedirect("e_delete.do?employee_id="+employee_id);
             }
         }
     }//end doGet

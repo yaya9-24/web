@@ -339,4 +339,10 @@ public class MemberDAOimpl implements MemberDAO{
 
         return vo2;
     }
+
+    @Override
+    public int idCheck(MemberVO vo) {
+
+        return 0;
+    }
 }

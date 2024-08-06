@@ -56,7 +56,7 @@
             <td><input type="text" id="department_id" name="department_id" value="${vo2.department_id}"></td>
         </tr>
         <tr>
-            <td><input type="submit" value="제출완료"></td>
+            <td colspan="2"><input type="submit" value="제출완료"></td>
         </tr>
     </table>
 </form>
