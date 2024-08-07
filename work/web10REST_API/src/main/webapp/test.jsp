@@ -18,7 +18,6 @@
                 console.log(obj.name,obj.age);
 
 
-
                 document.querySelector("#data").innerHTML = this.responseText;
                 document.querySelector("#name").innerHTML = obj.name;
                 document.querySelector("#age").innerHTML = obj.age;

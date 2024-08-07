@@ -65,16 +65,27 @@
       console.log("onclick...")
 
       let id = document.getElementById("id").value;
+      console.log(id);
 
       const xhttp = new XMLHttpRequest();
       xhttp.onload = function (){
         console.log(this.responseText);
 
         let obj = JSON.parse(this.responseText);
+        console.log(obj.result);
 
+        let message = '';
+        if(obj.result == 'OK'){
+          message = '사용가능';
+        } else {
+          message = '중복된 아이디';
+        }
+
+        document.querySelector("#result").innerHTML = message;
       };
       xhttp.open("GET","http://localhost:8090/web07total2_war_exploded/m_idCheck.do?id="+id);
       xhttp.send();
+
     };
   };
 
@@ -92,7 +103,8 @@
         <td>
           <input type="text" id="id" name="id" value="admin" placeholder="ID를 입력하세요">
           <button type="button" id="btn_idCheck">중복체크</button>
-          버튼추가, 비동기통신 ,db연동해서 결과출력(사용가능 or 중복된 아이디)
+          <span id="result">사용가능 or 중복된 아이디</span>
+          <%--버튼추가, 비동기통신 ,db연동해서 결과출력(사용가능 or 중복된 아이디)--%>
         </td>
       </tr>
       <tr>

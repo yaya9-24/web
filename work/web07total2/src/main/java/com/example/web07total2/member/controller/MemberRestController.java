@@ -1,29 +1,47 @@
 package com.example.web07total2.member.controller;
 
+import com.example.web07total2.member.model.MemberDAO;
+import com.example.web07total2.member.model.MemberDAOimpl;
 import com.example.web07total2.member.model.MemberVO;
+import com.google.gson.Gson;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
 @WebServlet("/m_idCheck.do")
 public class MemberRestController extends HttpServlet {
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response){
+    MemberDAO dao = new MemberDAOimpl();
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String sPath = request.getServletPath();
         System.out.println("sPath:"+sPath);
 
         if (sPath.equals("/m_idCheck.do")){
-            String id = request.getParameter("id");
+            String id =request.getParameter("id");
             System.out.println(id);
+
             MemberVO vo = new MemberVO();
             vo.setId(id);
 
+            MemberVO vo2 = dao.idCheck(vo);
             Map<String,String> map = new HashMap<>();
+            if (vo2==null){
+                map.put("result","OK");
+            } else {
+                map.put("result","Not OK");
+            }
+
+
+            PrintWriter out = response.getWriter();
+            out.println(new Gson().toJson(map));
 
         }
 
