@@ -12,9 +12,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-@WebServlet("/m_idCheck.do")
+@WebServlet({"/m_idCheck.do","/json_m_selectAll.do","/json_m_selectOne.do"})
 public class MemberRestController extends HttpServlet {
 
     MemberDAO dao = new MemberDAOimpl();
@@ -43,6 +44,24 @@ public class MemberRestController extends HttpServlet {
             PrintWriter out = response.getWriter();
             out.println(new Gson().toJson(map));
 
+        } else if (sPath.equals("/json_m_selectAll.do")) {
+            //회원목록 rest api 구현하기.
+
+            List<MemberVO> list = dao.selectAll();
+
+            PrintWriter out = response.getWriter();
+            out.println(new Gson().toJson(list));
+        } else if (sPath.equals("/json_m_selectOne.do")) {
+            //회원정보 rest api 구현하기.
+            String num = request.getParameter("num");
+
+            MemberVO vo = new MemberVO();
+            vo.setNum(Integer.parseInt(num));
+            
+            MemberVO vo2 = dao.selectOne(vo);
+
+            PrintWriter out = response.getWriter();
+            out.println(new Gson().toJson(vo2));
         }
 
 

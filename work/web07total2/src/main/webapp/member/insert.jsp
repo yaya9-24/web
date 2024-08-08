@@ -1,4 +1,5 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -59,52 +60,79 @@
       background-color: #ffc6c6;
     }
   </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script>
-  window.onload = function (){
-    document.getElementById("btn_idCheck").onclick = function (){
-      console.log("onclick...")
+    console.log("hello...");
+    //http://localhost:8090/web10REST_API_war_exploded/json_object2.do
+    window.onload = function(){
+      console.log("onload.....");
 
-      let id = document.getElementById("id").value;
-      console.log(id);
+      document.querySelector("#btn_idCheck").onclick = function(){
+        console.log("btn_idCheck....");
 
-      const xhttp = new XMLHttpRequest();
-      xhttp.onload = function (){
-        console.log(this.responseText);
+        //1.javascript비동기 통신
+        // let id = document.querySelector("#id").value;
+        // console.log(id);
+        //
+        // const xhttp = new XMLHttpRequest();
+        // xhttp.onload = function(){
+        //   console.log(this.responseText);//문자열 :{"result":"Not OK"}
+        //
+        //   let obj = JSON.parse(this.responseText);//객체로 변환해준다.
+        //   console.log(obj.result);
+        //
+        //   let message = '';
+        //   if(obj.result === 'OK'){
+        //     message = '사용가능';
+        //   }else{
+        //     message = '중복된 아이디';
+        //   }
+        //
+        //   document.querySelector("#result").innerHTML = message;
+        // };
+        // xhttp.open("GET","http://localhost:8090/web07total_war_exploded/m_idCheck.do?id="+id);
+        // xhttp.send();
 
-        let obj = JSON.parse(this.responseText);
-        console.log(obj.result);
+        //2.제이쿼리 비동기통신 방법으로 구현하세요
+        let url2 = "http://localhost:8090/web07total2_war_exploded/m_idCheck.do";
+        $.ajax({
+          url:url2,
+          type:"get",
+          data:{id:$("#id").val()},
+          dataType:"json",
+          success:function(response){
+            console.log(response);
+            let message = '';
+            if(response.result === 'OK'){
+              message = '사용가능';
+            }else{
+              message = '중복된 아이디';
+            }
+            $("#result").html(message);
+          },
+          error:function(ex){
+            console.log(ex);
+          }
+        });
 
-        let message = '';
-        if(obj.result == 'OK'){
-          message = '사용가능';
-        } else {
-          message = '중복된 아이디';
-        }
-
-        document.querySelector("#result").innerHTML = message;
-      };
-      xhttp.open("GET","http://localhost:8090/web07total2_war_exploded/m_idCheck.do?id="+id);
-      xhttp.send();
+      };//end onclick....
 
     };
-  };
-
   </script>
 </head>
 
 <body>
 <jsp:include page="../top_menu.jsp"/>
 <div>
-  <h1><%= "회원가입" %></h1>
+  <h1>회원가입 페이지</h1>
   <form action="m_insertOK.do" method="post">
     <table id="insertTable">
       <tr>
         <td><label for="id">ID</label></td>
         <td>
           <input type="text" id="id" name="id" value="admin" placeholder="ID를 입력하세요">
-          <button type="button" id="btn_idCheck">중복체크</button>
+          <input type="button" id="btn_idCheck" value="idCheck">
           <span id="result">사용가능 or 중복된 아이디</span>
-          <%--버튼추가, 비동기통신 ,db연동해서 결과출력(사용가능 or 중복된 아이디)--%>
         </td>
       </tr>
       <tr>
@@ -112,18 +140,19 @@
         <td><input type="text" id="pw" name="pw" value="hi1111" placeholder="PW를 입력하세요"></td>
       </tr>
       <tr>
+      <tr>
         <td><label for="name">NAME</label></td>
-        <td><input type="text" id="name" name="name" value="kim" placeholder="이름을 입력하세요"></td>
+        <td><input type="text" id="name" name="name" value="kim" placeholder="NAME를 입력하세요"></td>
       </tr>
       <tr>
         <td><label for="tel">TEL</label></td>
-        <td><input type="text" id="tel" name="tel" value="010" placeholder="전화번호를 입력하세요"></td>
+        <td><input type="text" id="tel" name="tel" value="010" placeholder="TEL를 입력하세요"></td>
       </tr>
-      <tr>
-        <td colspan="4"><input type="submit" value="가입완료"></td>
+      <td colspan="2"><input type="submit" value="가입완료"></td>
       </tr>
     </table>
   </form>
 </div>
 </body>
+
 </html>

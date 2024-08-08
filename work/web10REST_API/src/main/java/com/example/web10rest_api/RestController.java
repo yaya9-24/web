@@ -91,6 +91,10 @@ public class RestController extends HttpServlet {
 
     }//end doGet...
 
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("doPost...");
+        doGet(request,response);
+    }//end doPost...
 
     public void destroy() {
     }

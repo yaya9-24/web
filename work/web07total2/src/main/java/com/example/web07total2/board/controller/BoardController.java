@@ -18,7 +18,8 @@ import java.util.List;
 
 @WebServlet({"/b_insert.do","/b_update.do","/b_delete.do"
         ,"/b_selectOne.do","/b_selectAll.do","/b_searchList.do"
-        ,"/b_insertOK.do","/b_updateOK.do","/b_deleteOK.do","/b_selectAllOK.do"})
+        ,"/b_insertOK.do","/b_updateOK.do","/b_deleteOK.do","/b_selectAllOK.do"
+        ,"/ajax_b_selectAll.do","/ajax_b_selectOne.do"})
 public class BoardController extends HttpServlet {
 
     //BoardDAO,BoardDAOimpl 생성하시고 각 메소드들을 해당 분기문에서 호출해서 로그출력하세요.
@@ -62,12 +63,18 @@ public class BoardController extends HttpServlet {
 
             RequestDispatcher rd = request.getRequestDispatcher("board/selectOne.jsp");
             rd.forward(request,response);
+        }else if (sPath.equals("/ajax_b_selectOne.do")){
+            RequestDispatcher rd = request.getRequestDispatcher("board/ajax_selectOne.jsp");
+            rd.forward(request,response);
         }else if (sPath.equals("/b_selectAll.do")){
             List<BoardVO> list = dao.selectAll();
 
             request.setAttribute("list",list);
 
             RequestDispatcher rd = request.getRequestDispatcher("board/selectAll.jsp");
+            rd.forward(request,response);
+        }else if (sPath.equals("/ajax_b_selectAll.do")){
+            RequestDispatcher rd = request.getRequestDispatcher("board/ajax_selectAll.jsp");
             rd.forward(request,response);
         }else if (sPath.equals("/b_searchList.do")){
             String searchKey = request.getParameter("searchKey");
