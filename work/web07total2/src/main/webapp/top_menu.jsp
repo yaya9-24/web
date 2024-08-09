@@ -10,6 +10,8 @@
 <c:if test="${user_id!=null}"><a href="b_insert.do">게시글 작성</a></c:if>
 <a href="b_selectAll.do">게시글 목록</a>
 <a href="ajax_b_selectAll.do">게시글 목록(비동기통신)</a>
+<c:if test="${user_id!=null}"><a href="p_insert.do">상품 구매</a></c:if>
+<c:if test="${user_id!=null}"><a href="p_selectAll.do">상품 구매 목록</a></c:if>
 <c:if test="${user_id==null}"><a href="login.do">login</a></c:if>
 <c:if test="${user_id!=null}"><a href="logout.do">logout</a></c:if>
 
