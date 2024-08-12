@@ -70,7 +70,7 @@
         <table id="insertTable">
             <tr>
                 <td><label for="pname">상품이름</label></td>
-                <td><input type="text" id="pname" name="pname" value="BMW" placeholder="상품이름을 입력하세요"></td>
+                <td><input type="color" id="pname" name="pname" value="BMW" placeholder="상품이름을 입력하세요"></td>
             </tr>
             <tr>
                 <td><label for="model">모델이름</label></td>
