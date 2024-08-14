@@ -294,7 +294,4 @@ public class CommentsDAOimpl implements CommentsDAO{
         }
         return list;
     }
-
-
-
 }

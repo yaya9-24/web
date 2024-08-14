@@ -1,21 +1,19 @@
-package com.example.mini_03_shopping.board.model;
+package com.example.mini_03_shopping.cart.model;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BoardDAOimpl implements BoardDAO{
-
-    private static final String DRIVER_NAME = "oracle.jdbc.OracleDriver";
+public class CartDAOimpl implements CartDAO{
+    private static final String DRIVER_NAME="oracle.jdbc.driver.OracleDriver";
     private static final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
-    private static final String USER = "java";
-    private static final String PASSWORD = "hi123456";
+    private static final String USER ="java";
+    private static final String PASSWORD ="hi123456";
     private Connection conn;
     private PreparedStatement pstmt;
     private ResultSet rs;
 
-    public BoardDAOimpl(){
-        System.out.println("BoardDAOimpl()...");
+    public CartDAOimpl(){
         try {
             Class.forName(DRIVER_NAME);
             System.out.println("Driver successed...");
@@ -23,27 +21,26 @@ public class BoardDAOimpl implements BoardDAO{
             throw new RuntimeException(e);
         }
     }
-
     @Override
-    public int insert(BoardVO vo) {
+    public int insert(CartVO vo) {
         System.out.println("insert()...");
         System.out.println(vo);
         int flag = 0;
+
         try {
             conn = DriverManager.getConnection(URL,USER,PASSWORD);
             System.out.println("conn successed...");
 
-            String sql = "insert into board(num,title,content,writer,img)" +
-                    " values(seq_board.nextval,?,?,?,?)";
+            String sql = "insert into cart(num,pname,price,count,cart_id)" +
+                    " values(?,?,?,?,seq_cart.nextval)";
 
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1,vo.getTitle());
-            pstmt.setString(2,vo.getContent());
-            pstmt.setString(3,vo.getWriter());
-            pstmt.setString(4,vo.getImgName());
+            pstmt.setInt(1,vo.getNum());
+            pstmt.setString(2,vo.getPname());
+            pstmt.setInt(3,vo.getPrice());
+            pstmt.setInt(4,vo.getCount());
 
             flag = pstmt.executeUpdate();
-            System.out.println("flag:"+flag);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }finally {
@@ -66,26 +63,23 @@ public class BoardDAOimpl implements BoardDAO{
     }
 
     @Override
-    public int update(BoardVO vo) {
+    public int update(CartVO vo) {
         System.out.println("update()...");
         System.out.println(vo);
         int flag = 0;
+
         try {
             conn = DriverManager.getConnection(URL,USER,PASSWORD);
             System.out.println("conn successed...");
 
-            String sql = "update board set title=?,content=?,writer=?,img=?" +
-                    " where num=?";
+            String sql = "update cart set price=?,count=? where num=?";
 
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1,vo.getTitle());
-            pstmt.setString(2,vo.getContent());
-            pstmt.setString(3,vo.getWriter());
-            pstmt.setString(4,vo.getImgName());
-            pstmt.setInt(5,vo.getNum());
+            pstmt.setInt(1,vo.getPrice());
+            pstmt.setInt(2,vo.getCount());
+            pstmt.setInt(3,vo.getNum());
 
             flag = pstmt.executeUpdate();
-            System.out.println("flag:"+flag);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }finally {
@@ -108,21 +102,21 @@ public class BoardDAOimpl implements BoardDAO{
     }
 
     @Override
-    public int delete(BoardVO vo) {
+    public int delete(CartVO vo) {
         System.out.println("delete()...");
         System.out.println(vo);
         int flag = 0;
+
         try {
             conn = DriverManager.getConnection(URL,USER,PASSWORD);
             System.out.println("conn successed...");
 
-            String sql = "delete from board where num=?";
+            String sql = "delete from cart where num=?";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1,vo.getNum());
 
             flag = pstmt.executeUpdate();
-            System.out.println("flag:"+flag);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }finally {
@@ -145,28 +139,26 @@ public class BoardDAOimpl implements BoardDAO{
     }
 
     @Override
-    public BoardVO selectOne(BoardVO vo) {
+    public CartVO selectOne(CartVO vo) {
         System.out.println("selectOne()...");
         System.out.println(vo);
-        BoardVO vo2 = null;
+
+        CartVO vo2 = null;
         try {
             conn = DriverManager.getConnection(URL,USER,PASSWORD);
-            System.out.println("conn successed...");
-
-            String sql = "select * from board where num=?";
+            String sql = "select * from cart where num=?";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1,vo.getNum());
 
             rs = pstmt.executeQuery();
             while (rs.next()){
-                vo2 = new BoardVO();
+                vo2 = new CartVO();
                 vo2.setNum(rs.getInt("num"));
-                vo2.setTitle(rs.getString("title"));
-                vo2.setContent(rs.getString("content"));
-                vo2.setWriter(rs.getString("writer"));
-                vo2.setWdate(rs.getDate("wdate"));
-                vo2.setImgName(rs.getString("img"));
+                vo2.setPname(rs.getString("pname"));
+                vo2.setPrice(rs.getInt("price"));
+                vo2.setCount(rs.getInt("count"));
+                vo2.setCart_id(rs.getInt("cart_id"));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -197,25 +189,24 @@ public class BoardDAOimpl implements BoardDAO{
     }
 
     @Override
-    public List<BoardVO> selectAll() {
+    public List<CartVO> selectAll() {
         System.out.println("selectOne()...");
-        List<BoardVO> list = new ArrayList<>();
+        List<CartVO> list = new ArrayList<>();
 
         try {
             conn = DriverManager.getConnection(URL,USER,PASSWORD);
+            String sql = "select * from cart order by cart_id desc";
 
-            String sql = "select * from board order by num desc";
             pstmt = conn.prepareStatement(sql);
 
             rs = pstmt.executeQuery();
             while (rs.next()){
-                BoardVO vo = new BoardVO();
+                CartVO vo = new CartVO();
                 vo.setNum(rs.getInt("num"));
-                vo.setTitle(rs.getString("title"));
-                vo.setContent(rs.getString("content"));
-                vo.setWriter(rs.getString("writer"));
-                vo.setWdate(rs.getDate("wdate"));
-                vo.setImgName(rs.getString("img"));
+                vo.setPname(rs.getString("pname"));
+                vo.setPrice(rs.getInt("price"));
+                vo.setCount(rs.getInt("count"));
+                vo.setCart_id(rs.getInt("cart_id"));
                 list.add(vo);
             }
         } catch (SQLException e) {
@@ -247,34 +238,24 @@ public class BoardDAOimpl implements BoardDAO{
     }
 
     @Override
-    public List<BoardVO> searchList(String searchKey, String searchWord) {
+    public List<CartVO> searchList(String searchKey, String searchWord) {
         System.out.println("searchList()...");
-        System.out.println("searchKey:"+searchKey);
-        System.out.println("searchWord:"+searchWord);
+        List<CartVO> list = new ArrayList<>();
 
-        List<BoardVO> list = new ArrayList<>();
         try {
             conn = DriverManager.getConnection(URL,USER,PASSWORD);
+            String sql = "select * from cart order by cart_id desc";
 
-            String sql = "";
-            if (searchKey.equals("writer")){
-                sql = "select * from board where writer like ? order by num desc";
-            } else if (searchKey.equals("title")){
-                sql = "select * from board where title like ? order by num desc";
-            } else if (searchKey.equals("content")){
-                sql = "select * from board where content like ? order by num desc";
-            }
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1,"%"+searchWord+"%");
-            rs = pstmt.executeQuery();
 
+            rs = pstmt.executeQuery();
             while (rs.next()){
-                BoardVO vo = new BoardVO();
+                CartVO vo = new CartVO();
                 vo.setNum(rs.getInt("num"));
-                vo.setTitle(rs.getString("title"));
-                vo.setContent(rs.getString("content"));
-                vo.setWriter(rs.getString("writer"));
-                vo.setWdate(rs.getDate("wdate"));
+                vo.setPname(rs.getString("pname"));
+                vo.setPrice(rs.getInt("price"));
+                vo.setCount(rs.getInt("count"));
+                vo.setCart_id(rs.getInt("cart_id"));
                 list.add(vo);
             }
         } catch (SQLException e) {
@@ -302,7 +283,6 @@ public class BoardDAOimpl implements BoardDAO{
                 }
             }
         }
-
         return list;
     }
 }

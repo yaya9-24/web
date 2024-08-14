@@ -148,11 +148,11 @@
         <td><label for="tel">TEL</label></td>
         <td><input type="text" id="tel" name="tel" value="010" placeholder="TEL를 입력하세요"></td>
       </tr>
+      <tr>
       <td colspan="2"><input type="submit" value="가입완료"></td>
       </tr>
     </table>
   </form>
 </div>
 </body>
-
 </html>

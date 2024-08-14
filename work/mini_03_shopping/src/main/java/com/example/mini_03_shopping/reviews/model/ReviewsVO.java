@@ -1,24 +1,22 @@
-package com.example.mini_03_shopping.board.model;
+package com.example.mini_03_shopping.reviews.model;
 
 import java.sql.Date;
 
-public class BoardVO {
+public class ReviewsVO {
     private int num;
-    private String title;
     private String content;
     private String writer;
     private Date wdate;
-    private String imgName;
+    private int bnum;
 
     @Override
     public String toString() {
-        return "BoardVO{" +
+        return "ReviewsVO{" +
                 "num=" + num +
-                ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", writer='" + writer + '\'' +
                 ", wdate=" + wdate +
-                ", imgName='" + imgName + '\'' +
+                ", bnum=" + bnum +
                 '}';
     }
 
@@ -28,14 +26,6 @@ public class BoardVO {
 
     public void setNum(int num) {
         this.num = num;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContent() {
@@ -62,11 +52,11 @@ public class BoardVO {
         this.wdate = wdate;
     }
 
-    public String getImgName() {
-        return imgName;
+    public int getBnum() {
+        return bnum;
     }
 
-    public void setImgName(String imgName) {
-        this.imgName = imgName;
+    public void setBnum(int bnum) {
+        this.bnum = bnum;
     }
 }

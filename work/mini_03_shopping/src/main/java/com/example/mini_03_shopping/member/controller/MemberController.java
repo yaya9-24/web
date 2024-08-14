@@ -1,8 +1,8 @@
-package com.example.web07total2.member.controller;
+package com.example.mini_03_shopping.member.controller;
 
-import com.example.web07total2.member.model.MemberDAO;
-import com.example.web07total2.member.model.MemberDAOimpl;
-import com.example.web07total2.member.model.MemberVO;
+import com.example.mini_03_shopping.member.model.MemberDAO;
+import com.example.mini_03_shopping.member.model.MemberDAOimpl;
+import com.example.mini_03_shopping.member.model.MemberVO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,69 +18,44 @@ import java.util.List;
         ,"/m_selectOne.do","/m_selectAll.do","/m_searchList.do"
         ,"/m_insertOK.do","/m_updateOK.do","/m_deleteOK.do","/m_selectAllOK.do"
         ,"/login.do","/loginOK.do","/logout.do"
-        ,"/ajax_m_selectAll.do","/ajax_m_selectOne.do"})
+        })
 public class MemberController extends HttpServlet {
 
-        MemberDAO dao = new MemberDAOimpl();
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    MemberDAO dao = new MemberDAOimpl();
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String sPath = request.getServletPath();
         System.out.println("sPath:"+sPath);
 
         if (sPath.equals("/m_insert.do")){
             RequestDispatcher rd = request.getRequestDispatcher("member/insert.jsp");
             rd.forward(request,response);
-        }else if (sPath.equals("/m_update.do")){
-            System.out.println(request.getParameter("num"));
-            int num = Integer.parseInt(request.getParameter("num"));
-            MemberVO vo = new MemberVO();
-            vo.setNum(num);
-            MemberVO vo2 = dao.selectOne(vo);
+        } else if (sPath.equals("/m_update.do")){
+            String num = request.getParameter("num");
+            System.out.println(num);
 
+            MemberVO vo = new MemberVO();
+            vo.setNum(Integer.parseInt(num));
+
+            MemberVO vo2 = dao.selectOne(vo);
             request.setAttribute("vo2",vo2);
 
             RequestDispatcher rd = request.getRequestDispatcher("member/update.jsp");
             rd.forward(request,response);
-        }else if (sPath.equals("/m_delete.do")){
+        } else if (sPath.equals("/m_delete.do")){
             RequestDispatcher rd = request.getRequestDispatcher("member/delete.jsp");
             rd.forward(request,response);
-        }else if (sPath.equals("/m_selectOne.do")){
-            System.out.println(request.getParameter("num"));
-            int num = Integer.parseInt(request.getParameter("num"));
-            MemberVO vo = new MemberVO();
-            vo.setNum(num);
-            MemberVO vo2 = dao.selectOne(vo);
-
-            request.setAttribute("vo2",vo2);
+        } else if (sPath.equals("/m_selectOne.do")){
 
             RequestDispatcher rd = request.getRequestDispatcher("member/selectOne.jsp");
             rd.forward(request,response);
-        }else if (sPath.equals("/ajax_m_selectOne.do")){
-
-            RequestDispatcher rd = request.getRequestDispatcher("member/ajax_selectOne.jsp");
-            rd.forward(request,response);
-        }else if (sPath.equals("/m_selectAll.do")){
-
-            List<MemberVO> list = dao.selectAll();
-
-            request.setAttribute("list",list);
-
+        } else if (sPath.equals("/m_selectAll.do")){
             RequestDispatcher rd = request.getRequestDispatcher("member/selectAll.jsp");
             rd.forward(request,response);
-        }else if (sPath.equals("/ajax_m_selectAll.do")) {
-            RequestDispatcher rd = request.getRequestDispatcher("member/ajax_selectAll.jsp");
-            rd.forward(request, response);
-        }else if (sPath.equals("/m_searchList.do")){
-            String searchKey = request.getParameter("searchKey");
-            String searchWord = request.getParameter("searchWord");
-            System.out.println(searchKey);
-            System.out.println(searchWord);
-
-            List<MemberVO> list = dao.searchList(searchKey,searchWord);
-
-            request.setAttribute("list",list);
+        } else if (sPath.equals("/m_searchList.do")){
             RequestDispatcher rd = request.getRequestDispatcher("member/selectAll.jsp");
             rd.forward(request,response);
-        } else if (sPath.equals("/m_insertOK.do")) {
+        } else if (sPath.equals("/m_insertOK.do")){
             String id = request.getParameter("id");
             String pw = request.getParameter("pw");
             String name = request.getParameter("name");
@@ -105,7 +80,7 @@ public class MemberController extends HttpServlet {
                 System.out.println("insert failed...");
                 response.sendRedirect("m_insert.do");
             }
-        }else if (sPath.equals("/m_updateOK.do")) {
+        } else if (sPath.equals("/m_updateOK.do")){
             String num = request.getParameter("num");
             String id = request.getParameter("id");
             String pw = request.getParameter("pw");
@@ -125,33 +100,33 @@ public class MemberController extends HttpServlet {
             vo.setName(name);
             vo.setTel(tel);
 
-            int result = dao.update(vo) ;
+            int result = dao.update(vo);
             if (result == 1){
                 System.out.println("update successed...");
                 response.sendRedirect("m_selectOne.do?num="+num);
             } else {
                 System.out.println("update failed...");
-                response.sendRedirect("m_update.do?num="+num);
+                response.sendRedirect("m_update.do");
             }
-        }else if (sPath.equals("/m_deleteOK.do")) {
-            String num = request.getParameter("num");
+        } else if (sPath.equals("/m_deleteOK.do")){
+            String num = request.getParameter("num2");
+
             System.out.println(num);
 
             MemberVO vo = new MemberVO();
             vo.setNum(Integer.parseInt(num));
-
             int result = dao.delete(vo);
             if (result == 1){
                 System.out.println("delete successed...");
                 response.sendRedirect("m_selectAll.do");
             } else {
                 System.out.println("delete failed...");
-                response.sendRedirect("m_delete.do?num="+num);
+                response.sendRedirect("m_update.do");
             }
-        } else if (sPath.equals("/login.do")) {
+        } else if (sPath.equals("/login.do")){
             RequestDispatcher rd = request.getRequestDispatcher("member/login.jsp");
             rd.forward(request,response);
-        } else if (sPath.equals("/loginOK.do")) {
+        } else if (sPath.equals("/loginOK.do")){
             String id = request.getParameter("id");
             String pw = request.getParameter("pw");
             System.out.println(id);
@@ -161,28 +136,25 @@ public class MemberController extends HttpServlet {
             vo.setId(id);
             vo.setPw(pw);
             MemberVO vo2 = dao.login(vo);
-            System.out.println(vo2);
-            if (vo2 != null){
+            if (vo2 !=null){
                 HttpSession session = request.getSession();
                 session.setAttribute("user_id",id);
                 session.setMaxInactiveInterval(5*60);
                 response.sendRedirect("home.do");
-            }else {
+            } else {
                 response.sendRedirect("login.do");
             }
-        } else if (sPath.equals("/logout.do")) {
+        } else if (sPath.equals("/logout.do")){
             HttpSession session = request.getSession();
             session.invalidate();
 
             response.sendRedirect("home.do");
         }
-    }
+    }//end doGet
 
     public void doPost(HttpServletRequest request
             , HttpServletResponse response)
             throws IOException, ServletException {
         doGet(request,response);
-    }
-    public void destroy() {
     }
 }

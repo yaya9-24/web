@@ -31,9 +31,6 @@
         }
       })
     });
-
-
-
   </script>
 </head>
 <body>
@@ -54,7 +51,7 @@
 
   </tbody>
 </table>
-<a href="m_update.do?num=${vo2.num}">회원정보 수정</a>
-<a href="m_delete.do?num=${vo2.num}">회원정보 삭제</a>
+<a href="m_update.do?num=${param.num}">회원정보 수정</a>
+<a href="m_delete.do?num=${param.num}">회원정보 삭제</a>
 </body>
 </html>

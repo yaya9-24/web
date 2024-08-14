@@ -3,7 +3,6 @@ package com.example.web11fileupload;
 import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import jakarta.servlet.RequestDispatcher;
@@ -28,6 +27,7 @@ public class HelloServlet extends HttpServlet {
         }
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
         String sPath = request.getServletPath();
         System.out.println("sPath:"+sPath);
 
@@ -43,7 +43,7 @@ public class HelloServlet extends HttpServlet {
                 //업로드파일 객체 설정
                 DiskFileItemFactory factory = DiskFileItemFactory.builder().get();
                 JakartaServletFileUpload upload = new JakartaServletFileUpload(factory);
-                upload.setFileSizeMax(1024 * 1024 * 100); //파일 최대 사이즈 제한 100mb
+                upload.setFileSizeMax(1024 * 1024 * 50); //파일 최대 사이즈 제한 100mb
                 //요청(request)으로부터 파일아이템들을 파싱
                 List<FileItem> items = upload.parseRequest(request);
 
